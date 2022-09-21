@@ -1,7 +1,9 @@
 package com.kapas.util
 
+import com.kapas.data.table.HistoryTable
 import com.kapas.data.table.JobTable
 import com.kapas.data.table.UserTable
+import com.kapas.model.history.HistoryResponse
 import com.kapas.model.job.JobListResponse
 import com.kapas.model.job.JobResponse
 import com.kapas.model.leaderboard.LeaderboardResponse
@@ -76,6 +78,18 @@ object Mapper {
             name = row[UserTable.name],
             score = row[UserTable.score],
             avatarUrl = row[UserTable.avatarUrl]
+        )
+    }
+    // not clear
+    fun mapRowToHistoryResponse(row: ResultRow?): HistoryResponse? {
+        if (row == null)
+            return null
+
+        return HistoryResponse(
+            transactionId = row[HistoryTable.transactionId],
+            jobId = row[HistoryTable.jobId],
+            title = row[JobTable.title],
+            wage = row[JobTable.wage]
         )
     }
 

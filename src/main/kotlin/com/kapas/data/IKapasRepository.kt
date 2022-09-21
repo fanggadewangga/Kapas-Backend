@@ -1,5 +1,7 @@
 package com.kapas.data
 
+import com.kapas.model.history.HistoryBody
+import com.kapas.model.history.HistoryResponse
 import com.kapas.model.job.JobBody
 import com.kapas.model.job.JobListResponse
 import com.kapas.model.job.JobResponse
@@ -16,4 +18,7 @@ interface IKapasRepository {
     suspend fun getJobDetail(jobId: String): JobResponse // half clear
     suspend fun getAllJobs(): List<JobListResponse> // half clear
     suspend fun searchJob(query: String): List<JobListResponse> // not clear
+    suspend fun addHistory(body: HistoryBody) // not clear
+
+    suspend fun getHistoriesByUser(uid: String): List<HistoryResponse> // not clear
 }

@@ -2,8 +2,10 @@ package com.kapas.data
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils
 import com.kapas.data.database.DatabaseFactory
+import com.kapas.data.table.HistoryTable
 import com.kapas.data.table.JobTable
 import com.kapas.data.table.UserTable
+import com.kapas.model.history.HistoryBody
 import com.kapas.model.job.JobBody
 import com.kapas.model.job.JobListResponse
 import com.kapas.model.job.JobResponse
@@ -138,6 +140,34 @@ class KapasRepository(
                 .mapNotNull {
                     Mapper.mapRowToJobListResponse(it)
                 }
+        }
+
+    override suspend fun addHistory(body: HistoryBody) {
+        dbFactory.dbQuery {
+            HistoryTable.insert { table ->
+                table[uid] = body.uid
+                table[jobId] = body.jobId
+                table[transactionId] = "TRANSACTION${NanoIdUtils.randomNanoId()}"
+            }
+        }
+    }
+
+    override suspend fun getHistoriesByUser(uid: String) =
+        dbFactory.dbQuery {
+            HistoryTable.join(JobTable, JoinType.INNER) {
+                HistoryTable.jobId.eq(JobTable.jobId)
+            }.join(UserTable, JoinType.INNER) {
+                HistoryTable.uid.eq(UserTable.uid)
+            }.slice(
+                HistoryTable.transactionId,
+                JobTable.jobId,
+                JobTable.title,
+                JobTable.wage
+            ).select {
+                HistoryTable.uid.eq(uid)
+            }.mapNotNull {
+                Mapper.mapRowToHistoryResponse(it)
+            }
         }
 
 }
