@@ -142,10 +142,10 @@ class KapasRepository(
                 }
         }
 
-    override suspend fun addHistory(body: HistoryBody) {
+    override suspend fun addHistory(uid:String, body: HistoryBody) {
         dbFactory.dbQuery {
             HistoryTable.insert { table ->
-                table[uid] = body.uid
+                table[this.uid] = body.uid
                 table[jobId] = body.jobId
                 table[transactionId] = "TRANSACTION${NanoIdUtils.randomNanoId()}"
             }
