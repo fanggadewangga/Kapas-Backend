@@ -19,6 +19,9 @@ class KapasRepository(
     private val dbFactory: DatabaseFactory
 ) : IKapasRepository {
 
+    /*
+    * TODO : PAY ATTENTION TO INSERT USER AND VERIFICATION
+    * */
     override suspend fun addUser(body: UserBody) {
         dbFactory.dbQuery {
             UserTable.insert { table ->
@@ -95,6 +98,12 @@ class KapasRepository(
                 table[latitude] = body.latitude
                 table[longitude] = body.longitude
             }
+        }
+    }
+
+    override suspend fun deleteJob(jobId: String) {
+        dbFactory.dbQuery {
+            JobTable.deleteWhere { JobTable.jobId.eq(jobId) }
         }
     }
 

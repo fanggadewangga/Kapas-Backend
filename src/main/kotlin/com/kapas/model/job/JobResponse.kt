@@ -3,7 +3,6 @@ package com.kapas.model.job
 import com.google.gson.annotations.SerializedName
 
 data class JobResponse(
-    // not finished yet, pay attention to UI
     @field:SerializedName("job_id")
     val jobId: String,
 

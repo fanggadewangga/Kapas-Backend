@@ -57,11 +57,24 @@ class JobRoute(
         }
     }
 
+    private fun Route.deleteJob() {
+        delete<JobRouteLocation.JobDeleteRoute> {
+            val jobId = try {
+                call.parameters["jobId"]
+            } catch (e: Exception) {
+                call.generalException(e)
+                return@delete
+            }
+            call.generalSuccess { repository.deleteJob(jobId!!) }
+        }
+    }
+
     fun initJobRoute(route: Route){
         route.apply {
             getAllJobs()
             postJob()
             getJobDetail()
+            deleteJob()
         }
     }
 }

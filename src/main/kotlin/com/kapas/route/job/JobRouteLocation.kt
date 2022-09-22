@@ -6,10 +6,6 @@ import io.ktor.locations.*
 class JobRouteLocation {
 
     companion object {
-        /*
-        * TODO: DELETE JOB
-        * */
-
         // GET (include query to search job)
         const val JOB = "/job"
 
@@ -20,6 +16,7 @@ class JobRouteLocation {
         const val DETAIL_JOB = "$JOB/{jobId}"
 
         // DELETE (not yet implemented)
+        const val DELETE_JOB = "$JOB/{jobId}"
     }
 
     @Location(JOB)
@@ -30,5 +27,8 @@ class JobRouteLocation {
 
     @Location(DETAIL_JOB)
     data class JobGetDetailRoute(val jobId: String)
+
+    @Location(DELETE_JOB)
+    data class JobDeleteRoute(val jobId: String)
 
 }

@@ -3,7 +3,6 @@ package com.kapas.model.history
 import com.google.gson.annotations.SerializedName
 
 data class HistoryResponse(
-    // not yet, pay attention to UI and query
     @field:SerializedName("transaction_id")
     val transactionId: String,
 
@@ -15,5 +14,4 @@ data class HistoryResponse(
 
     @field:SerializedName("wage")
     val wage: Double
-
 )

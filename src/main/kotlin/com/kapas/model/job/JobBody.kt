@@ -3,8 +3,10 @@ package com.kapas.model.job
 import com.google.gson.annotations.SerializedName
 
 data class JobBody(
+    /*
+    *  TODO : PAY ATTENTION TO TAMBAH LOKER PAGE
+    * */
 
-    // not finished yet, pay attention to UI
     @field:SerializedName("title")
     val title: String,
 

@@ -80,6 +80,8 @@ object Mapper {
             avatarUrl = row[UserTable.avatarUrl]
         )
     }
+
+
     // not clear
     fun mapRowToHistoryResponse(row: ResultRow?): HistoryResponse? {
         if (row == null)
