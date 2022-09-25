@@ -10,13 +10,13 @@ data class JobResponse(
     val title: String,
 
     @field:SerializedName("poster_id")
-    val posterId: String,
+    val posterId: String?,
 
     @field:SerializedName("poster_name")
-    val posterName: String,
+    val posterName: String?,
 
     @field:SerializedName("poster_avatar_url")
-    val posterAvatarUrl: String,
+    val posterAvatarUrl: String?,
 
     @field:SerializedName("location")
     val location: String,

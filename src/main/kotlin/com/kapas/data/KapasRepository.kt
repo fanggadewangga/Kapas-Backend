@@ -13,7 +13,6 @@ import com.kapas.model.user.UserBody
 import com.kapas.model.user.UserResponse
 import com.kapas.util.Mapper
 import org.jetbrains.exposed.sql.*
-import java.util.*
 
 class KapasRepository(
     private val dbFactory: DatabaseFactory
@@ -30,6 +29,7 @@ class KapasRepository(
                 table[name] = body.name
                 table[address] = body.address
                 table[birthPlace] = body.birthPlace
+                table[birthDate] = body.birthDate
                 table[email] = body.email
                 table[phone] = body.phone
                 table[avatarUrl] = body.avatarUrl
@@ -109,7 +109,7 @@ class KapasRepository(
 
     override suspend fun getJobDetail(jobId: String): JobResponse =
         dbFactory.dbQuery {
-            JobTable.join(UserTable, JoinType.LEFT) {
+            JobTable.join(UserTable, JoinType.INNER) {
                 JobTable.posterId.eq(UserTable.uid)
             }.slice(
                 JobTable.jobId,
@@ -144,7 +144,7 @@ class KapasRepository(
     override suspend fun searchJob(query: String): List<JobListResponse> =
         dbFactory.dbQuery {
             JobTable.select {
-                LowerCase(JobTable.title).like("%query%".lowercase(Locale.getDefault()))
+                LowerCase(JobTable.title).like("%query%".lowercase())
             }.groupBy(JobTable.jobId)
                 .mapNotNull {
                     Mapper.mapRowToJobListResponse(it)

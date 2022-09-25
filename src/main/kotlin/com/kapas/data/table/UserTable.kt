@@ -23,5 +23,5 @@ object UserTable: Table() {
     val score = integer("score")
     val rank = integer("rank")
 
-    override val primaryKey: PrimaryKey? = PrimaryKey(uid)
+    override val primaryKey: PrimaryKey = PrimaryKey(uid)
 }

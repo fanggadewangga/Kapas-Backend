@@ -7,11 +7,11 @@ data class LeaderboardResponse(
     val uid: String,
 
     @field:SerializedName("name")
-    val name: String,
+    val name: String?,
 
     @field:SerializedName("score")
     val score: Int,
 
     @field:SerializedName("avatar_url")
-    val avatarUrl: String
+    val avatarUrl: String?
 )

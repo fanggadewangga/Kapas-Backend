@@ -16,14 +16,6 @@ fun Application.configureRouting() {
     val jobRoute by inject<JobRoute>()
 
     routing {
-        get("/") {
-            call.respondText("Hello World!")
-        }
-
-        get("/leaderboard"){
-            call.respondText("Hello from leaderboard")
-        }
-
         userRoute.initUserRoute(this)
         jobRoute.initJobRoute(this)
     }
