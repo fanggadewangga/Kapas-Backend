@@ -20,7 +20,7 @@ class JobRoute(
     private fun Route.getAllJobs(){
         get<JobRouteLocation.JobGetListRoute>{
             val query = try {
-                call.request.queryParameters["query"]
+                call.request.queryParameters["q"]
             } catch (e: Exception) {
                 call.generalException(e)
                 return@get

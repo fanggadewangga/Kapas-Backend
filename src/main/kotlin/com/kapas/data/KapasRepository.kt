@@ -13,6 +13,7 @@ import com.kapas.model.user.UserBody
 import com.kapas.model.user.UserResponse
 import com.kapas.util.Mapper
 import org.jetbrains.exposed.sql.*
+import java.util.*
 
 class KapasRepository(
     private val dbFactory: DatabaseFactory
@@ -144,7 +145,7 @@ class KapasRepository(
     override suspend fun searchJob(query: String): List<JobListResponse> =
         dbFactory.dbQuery {
             JobTable.select {
-                LowerCase(JobTable.title).like("%query%".lowercase())
+                LowerCase(JobTable.title).like("%$query%".lowercase(Locale.getDefault()))
             }.groupBy(JobTable.jobId)
                 .mapNotNull {
                     Mapper.mapRowToJobListResponse(it)
