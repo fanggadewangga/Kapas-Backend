@@ -3,8 +3,6 @@ package com.kapas.model.user
 import com.google.gson.annotations.SerializedName
 
 data class UserBody (
-
-    // not finished yet, pay attention to UI
     @field:SerializedName("uid")
     val uid: String,
 

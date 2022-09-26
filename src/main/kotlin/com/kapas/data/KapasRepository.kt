@@ -9,20 +9,17 @@ import com.kapas.model.history.HistoryBody
 import com.kapas.model.job.JobBody
 import com.kapas.model.job.JobListResponse
 import com.kapas.model.job.JobResponse
+import com.kapas.model.user.EditVerificationBody
 import com.kapas.model.user.UserBody
 import com.kapas.model.user.UserResponse
 import com.kapas.util.Mapper
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.util.*
 
 class KapasRepository(
     private val dbFactory: DatabaseFactory
 ) : IKapasRepository {
 
-    /*
-    * TODO : PAY ATTENTION TO INSERT USER AND VERIFICATION
-    * */
     override suspend fun addUser(body: UserBody) {
         dbFactory.dbQuery {
             UserTable.insert { table ->
@@ -55,6 +52,31 @@ class KapasRepository(
             }
         }.first()
 
+
+    override suspend fun updateUserVerification(uid: String, body: EditVerificationBody) {
+        val user = getUserDetail(uid)
+
+        dbFactory.dbQuery {
+            UserTable.update(
+                where = { UserTable.uid.eq(uid) }
+            ) { table ->
+                table[cardNumber] = body.cardNumber
+                table[name] = body.name
+                table[address] = user.address
+                table[birthPlace] = body.birthPlace
+                table[email] = user.email
+                table[phone] = user.phone
+                table[avatarUrl] = user.avatarUrl
+                table[gender] = body.gender
+                table[balance] = user.balance
+                table[income] = user.income
+                table[outcome] = user.outcome
+                table[point] = user.point
+                table[score] = user.score
+                table[rank] = user.rank
+            }
+        }
+    }
 
     override suspend fun updateUser(uid: String, body: UserBody) {
         dbFactory.dbQuery {
@@ -154,10 +176,10 @@ class KapasRepository(
                 }
         }
 
-    override suspend fun addHistory(uid:String, body: HistoryBody) {
+    override suspend fun addHistory(body: HistoryBody) {
         dbFactory.dbQuery {
             HistoryTable.insert { table ->
-                table[this.uid] = body.uid
+                table[uid] = body.uid
                 table[jobId] = body.jobId
                 table[transactionId] = "TRANSACTION${NanoIdUtils.randomNanoId()}"
             }
@@ -166,9 +188,9 @@ class KapasRepository(
 
     override suspend fun getHistoriesByUser(uid: String) =
         dbFactory.dbQuery {
-            HistoryTable.join(JobTable, JoinType.INNER) {
+            HistoryTable.join(JobTable, JoinType.LEFT) {
                 HistoryTable.jobId.eq(JobTable.jobId)
-            }.join(UserTable, JoinType.INNER) {
+            }.join(UserTable, JoinType.LEFT) {
                 HistoryTable.uid.eq(UserTable.uid)
             }.slice(
                 HistoryTable.transactionId,
@@ -177,7 +199,8 @@ class KapasRepository(
                 JobTable.wage
             ).select {
                 HistoryTable.uid.eq(uid)
-            }.mapNotNull {
+            }
+                .mapNotNull {
                 Mapper.mapRowToHistoryResponse(it)
             }
         }

@@ -2,6 +2,7 @@ package com.kapas.route.user
 
 import com.kapas.data.IKapasRepository
 import com.kapas.model.history.HistoryBody
+import com.kapas.model.user.EditVerificationBody
 import com.kapas.model.user.UserBody
 import com.kapas.route.RouteResponseHelper.generalException
 import com.kapas.route.RouteResponseHelper.generalListSuccess
@@ -43,6 +44,26 @@ class UserRoute(
         }
     }
 
+    private fun Route.updateUserVerification() {
+        put<UserRouteLocation.UserUpdateRoute> {
+            val uid = try {
+                call.parameters["uid"]
+            } catch (e: Exception) {
+                call.generalException(e)
+                return@put
+            }
+
+            val body = try {
+                call.receive<EditVerificationBody>()
+            } catch (e: Exception) {
+                call.generalException(e)
+                return@put
+            }
+
+            call.generalSuccess { repository.updateUserVerification(uid!!, body) }
+        }
+    }
+
     private fun Route.updateUser() {
         put<UserRouteLocation.UserUpdateRoute> {
             val uid = try {
@@ -63,6 +84,7 @@ class UserRoute(
         }
     }
 
+
     private fun Route.getLeaderboard() {
         get<UserRouteLocation.LeaderboardGetListRoute> {
             call.generalListSuccess { repository.getLeaderboard() }
@@ -71,7 +93,7 @@ class UserRoute(
 
     private fun Route.postHistory() {
         post<UserRouteLocation.HistoryPostRoute> {
-            val uid = try {
+            try {
                 call.parameters["uid"]
             } catch (e: Exception) {
                 call.generalException(e)
@@ -85,7 +107,7 @@ class UserRoute(
                 return@post
             }
 
-            call.generalSuccess { repository.addHistory(uid!!, body) }
+            call.generalSuccess { repository.addHistory(body) }
         }
     }
 
@@ -107,6 +129,7 @@ class UserRoute(
             addUser()
             getUserDetail()
             updateUser()
+            updateUserVerification()
             getLeaderboard()
             postHistory()
             getHistoriesByUser()
