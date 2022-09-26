@@ -13,6 +13,7 @@ import com.kapas.model.user.UserBody
 import com.kapas.model.user.UserResponse
 import com.kapas.util.Mapper
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.util.*
 
 class KapasRepository(
@@ -110,7 +111,7 @@ class KapasRepository(
 
     override suspend fun getJobDetail(jobId: String): JobResponse =
         dbFactory.dbQuery {
-            JobTable.join(UserTable, JoinType.INNER) {
+            JobTable.join(UserTable, JoinType.LEFT) {
                 JobTable.posterId.eq(UserTable.uid)
             }.slice(
                 JobTable.jobId,
@@ -130,6 +131,7 @@ class KapasRepository(
                     JobTable.jobId.eq(jobId)
                 }
                 .groupBy(JobTable.jobId)
+                .groupBy(UserTable.uid)
                 .mapNotNull {
                     Mapper.mapRowToJobResponse(it)
                 }

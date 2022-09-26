@@ -17,9 +17,9 @@ interface IKapasRepository {
     suspend fun getLeaderboard(): List<LeaderboardResponse> // clear
     suspend fun addJob(body: JobBody) // clear
     suspend fun deleteJob(jobId: String) // clear
-    suspend fun getJobDetail(jobId: String): JobResponse // not clear
+    suspend fun getJobDetail(jobId: String): JobResponse // clear
     suspend fun getAllJobs(): List<JobListResponse> // clear
-    suspend fun searchJob(query: String): List<JobListResponse> // not clear
+    suspend fun searchJob(query: String): List<JobListResponse> // clear
     suspend fun addHistory(uid:String, body: HistoryBody) // clear
     suspend fun getHistoriesByUser(uid: String): List<HistoryResponse> // not clear
 }
