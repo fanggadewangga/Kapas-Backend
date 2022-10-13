@@ -17,10 +17,10 @@ import java.lang.Exception
 
 @KtorExperimentalLocationsAPI
 class UserRoute(
-    private val repository: IKapasRepository
+    private val repository: IKapasRepository,
 ) {
 
-    private fun Route.addUser(){
+    private fun Route.addUser() {
         post<UserRouteLocation.UserAddRoute> {
             val body = try {
                 call.receive<UserBody>()
@@ -83,7 +83,6 @@ class UserRoute(
             call.generalSuccess { repository.updateUser(uid!!, body) }
         }
     }
-
 
     private fun Route.getLeaderboard() {
         get<UserRouteLocation.LeaderboardGetListRoute> {

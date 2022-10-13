@@ -7,9 +7,7 @@ import com.kapas.model.job.JobBody
 import com.kapas.model.job.JobListResponse
 import com.kapas.model.job.JobResponse
 import com.kapas.model.leaderboard.LeaderboardResponse
-import com.kapas.model.user.EditVerificationBody
-import com.kapas.model.user.UserBody
-import com.kapas.model.user.UserResponse
+import com.kapas.model.user.*
 
 interface IKapasRepository {
 
@@ -21,7 +19,7 @@ interface IKapasRepository {
     suspend fun addJob(body: JobBody) // clear
     suspend fun deleteJob(jobId: String) // clear
     suspend fun getJobDetail(jobId: String): JobResponse // clear
-    suspend fun updateJobImage(jobId: String, body: EditJobImageBody) // not clear
+    suspend fun updateJobImage(jobId: String, body: EditJobImageBody) // clear
     suspend fun getAllJobs(): List<JobListResponse> // clear
     suspend fun searchJob(query: String): List<JobListResponse> // clear
     suspend fun addHistory(body: HistoryBody) // clear

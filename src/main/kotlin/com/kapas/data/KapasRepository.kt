@@ -15,7 +15,6 @@ import com.kapas.model.user.UserBody
 import com.kapas.model.user.UserResponse
 import com.kapas.util.Mapper
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.util.*
 
 class KapasRepository(

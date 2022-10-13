@@ -2,12 +2,9 @@ package com.kapas.plugins
 
 import com.kapas.route.job.JobRoute
 import com.kapas.route.user.UserRoute
-import io.ktor.routing.*
-import io.ktor.http.*
-import io.ktor.locations.*
 import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
+import io.ktor.locations.*
+import io.ktor.routing.*
 import org.koin.ktor.ext.inject
 
 @KtorExperimentalLocationsAPI

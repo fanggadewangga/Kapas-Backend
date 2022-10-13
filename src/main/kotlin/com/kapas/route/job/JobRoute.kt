@@ -3,17 +3,15 @@ package com.kapas.route.job
 import com.kapas.data.IKapasRepository
 import com.kapas.model.job.EditJobImageBody
 import com.kapas.model.job.JobBody
-import com.kapas.model.user.EditVerificationBody
 import com.kapas.route.RouteResponseHelper.generalException
 import com.kapas.route.RouteResponseHelper.generalListSuccess
 import com.kapas.route.RouteResponseHelper.generalSuccess
 import io.ktor.application.*
 import io.ktor.locations.*
-import io.ktor.routing.*
 import io.ktor.locations.post
 import io.ktor.locations.put
 import io.ktor.request.*
-import java.lang.Exception
+import io.ktor.routing.*
 
 @KtorExperimentalLocationsAPI
 class JobRoute(
