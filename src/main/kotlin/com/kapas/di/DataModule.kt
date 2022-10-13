@@ -3,10 +3,12 @@ package com.kapas.di
 import com.kapas.data.IKapasRepository
 import com.kapas.data.KapasRepository
 import com.kapas.data.database.DatabaseFactory
+import com.sun.jndi.toolkit.url.Uri
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.locations.*
 import org.koin.dsl.module
+import java.net.URI
 
 @KtorExperimentalLocationsAPI
 val databaseModule = module {
@@ -18,12 +20,16 @@ val databaseModule = module {
         val config = HikariConfig()
         config.apply {
             driverClassName = System.getenv("JDBC_DRIVER")
-            jdbcUrl = System.getenv("DATABASE_URL")
+            //jdbcUrl = System.getenv("DATABASE_URL")
             maximumPoolSize = 6
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
 
-            validate()
+            val uri = URI(System.getenv("DATABASE_URL"))
+            val username = uri.userInfo.split(":").toTypedArray()[0]
+            val password = uri.userInfo.split(":").toTypedArray()[1]
+            jdbcUrl =
+                "jdbc:postgresql://" + uri.host + ":" + uri.port + uri.path + "?sslmode=require" + "&user=$username&password=$password"
         }
         HikariDataSource(config)
     }
