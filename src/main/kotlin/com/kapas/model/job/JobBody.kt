@@ -28,6 +28,6 @@ data class JobBody(
     val latitude: Double,
 
     @field:SerializedName("longitude")
-    val longitude: Double
+    val longitude: Double,
 
-)
+    )

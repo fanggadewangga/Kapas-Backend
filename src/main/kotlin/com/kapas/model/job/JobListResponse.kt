@@ -11,6 +11,6 @@ data class JobListResponse(
     val title: String,
 
     @field:SerializedName("description")
-    val description: String
+    val description: String,
 
-)
+    )

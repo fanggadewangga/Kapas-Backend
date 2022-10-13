@@ -2,7 +2,7 @@ package com.kapas.model.user
 
 import com.google.gson.annotations.SerializedName
 
-data class UserBody (
+data class UserBody(
     @field:SerializedName("uid")
     val uid: String,
 
@@ -49,5 +49,5 @@ data class UserBody (
     val score: Int,
 
     @field:SerializedName("rank")
-    val rank: Int
+    val rank: Int,
 )

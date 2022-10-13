@@ -2,7 +2,7 @@ package com.kapas.model.user
 
 import com.google.gson.annotations.SerializedName
 
-data class EditVerificationBody (
+data class EditVerificationBody(
     @field:SerializedName("card_number")
     val cardNumber: String,
 
@@ -16,5 +16,5 @@ data class EditVerificationBody (
     val birthDate: String,
 
     @field:SerializedName("gender")
-    val gender: String
+    val gender: String,
 )

@@ -2,7 +2,7 @@ package com.kapas.data.table
 
 import org.jetbrains.exposed.sql.Table
 
-object HistoryTable: Table() {
+object HistoryTable : Table() {
 
     override val tableName: String = "history"
 

@@ -37,5 +37,5 @@ data class JobResponse(
     val latitude: Double,
 
     @field:SerializedName("longitude")
-    val longitude: Double
+    val longitude: Double,
 )

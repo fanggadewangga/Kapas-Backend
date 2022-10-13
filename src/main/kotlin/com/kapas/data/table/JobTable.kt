@@ -2,7 +2,7 @@ package com.kapas.data.table
 
 import org.jetbrains.exposed.sql.Table
 
-object JobTable: Table() {
+object JobTable : Table() {
 
     override val tableName: String = "job"
 
@@ -13,7 +13,7 @@ object JobTable: Table() {
     val wage = double("wage")
     val address = varchar("address", 512)
     val description = varchar("description", 1024)
-    val imageUrl = varchar("image_url",1024).nullable()
+    val imageUrl = varchar("image_url", 1024).nullable()
     val latitude = double("latitude")
     val longitude = double("longitude")
 

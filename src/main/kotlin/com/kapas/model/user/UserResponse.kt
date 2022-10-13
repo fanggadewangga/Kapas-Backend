@@ -49,5 +49,5 @@ data class UserResponse(
     val score: Int,
 
     @field:SerializedName("rank")
-    val rank: Int
+    val rank: Int,
 )

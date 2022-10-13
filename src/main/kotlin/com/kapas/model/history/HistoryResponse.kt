@@ -13,5 +13,5 @@ data class HistoryResponse(
     val title: String,
 
     @field:SerializedName("wage")
-    val wage: Double
+    val wage: Double,
 )

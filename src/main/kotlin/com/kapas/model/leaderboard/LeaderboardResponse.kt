@@ -16,5 +16,5 @@ data class LeaderboardResponse(
     val avatarUrl: String?,
 
     @field:SerializedName("rank")
-    val rank: Int
+    val rank: Int,
 )
