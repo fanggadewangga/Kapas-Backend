@@ -16,6 +16,7 @@ interface IKapasRepository {
     suspend fun updateUserVerification(uid: String, body: EditVerificationBody) // clear
     suspend fun updateUser(uid: String, body: UserBody) // clear
     suspend fun getLeaderboard(): List<LeaderboardResponse> // clear
+    suspend fun getUserRank(uid: String): Int // not clear
     suspend fun addJob(body: JobBody) // clear
     suspend fun deleteJob(jobId: String) // clear
     suspend fun getJobDetail(jobId: String): JobResponse // clear

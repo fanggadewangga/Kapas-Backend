@@ -10,6 +10,7 @@ import com.kapas.model.job.EditJobImageBody
 import com.kapas.model.job.JobBody
 import com.kapas.model.job.JobListResponse
 import com.kapas.model.job.JobResponse
+import com.kapas.model.leaderboard.LeaderboardResponse
 import com.kapas.model.user.EditVerificationBody
 import com.kapas.model.user.UserBody
 import com.kapas.model.user.UserResponse
@@ -44,14 +45,36 @@ class KapasRepository(
         }
     }
 
-    override suspend fun getUserDetail(uid: String): UserResponse =
-        dbFactory.dbQuery {
+    override suspend fun getUserDetail(uid: String): UserResponse {
+        val rank = getUserRank(uid)
+
+        val selectedUser = dbFactory.dbQuery {
             UserTable.select {
                 UserTable.uid.eq(uid)
             }.mapNotNull {
                 Mapper.mapRowToUserResponse(it)
             }
         }.first()
+
+        return UserResponse(
+            uid = selectedUser.uid,
+            cardNumber = selectedUser.cardNumber,
+            name = selectedUser.name,
+            address = selectedUser.address,
+            birthPlace = selectedUser.birthPlace,
+            birthDate = selectedUser.birthDate,
+            email = selectedUser.email,
+            phone = selectedUser.phone,
+            avatarUrl = selectedUser.avatarUrl,
+            gender = selectedUser.gender,
+            balance = selectedUser.balance,
+            income = selectedUser.income,
+            outcome = selectedUser.outcome,
+            point = selectedUser.point,
+            score = selectedUser.score,
+            rank = rank
+        )
+    }
 
 
     override suspend fun updateUserVerification(uid: String, body: EditVerificationBody) {
@@ -104,10 +127,44 @@ class KapasRepository(
 
     override suspend fun getLeaderboard() =
         dbFactory.dbQuery {
+            val leaderboard = UserTable.selectAll()
+                .orderBy(UserTable.score, SortOrder.DESC)
+                .limit(50)
+                .mapNotNull { Mapper.mapRowToLeaderboardResponse(it) }
+
+            val leaderboardSize = leaderboard.size
+
+            val list = mutableListOf<LeaderboardResponse>()
+
+            for (rank in 0 until leaderboardSize) {
+                val user = leaderboard[rank]
+                list.add(
+                    LeaderboardResponse(
+                        uid = user.uid,
+                        name = user.name,
+                        score = user.score,
+                        avatarUrl = user.avatarUrl,
+                        rank = rank + 1
+                    )
+                )
+            }
+            return@dbQuery list
+        }
+
+
+    override suspend fun getUserRank(uid: String): Int {
+        val leaderboard = dbFactory.dbQuery {
             UserTable.selectAll()
                 .orderBy(UserTable.score, SortOrder.DESC)
                 .mapNotNull { Mapper.mapRowToLeaderboardResponse(it) }
         }
+
+        val selectedUser = dbFactory.dbQuery {
+            UserTable.select { UserTable.uid.eq(uid) }.firstNotNullOf { Mapper.mapRowToLeaderboardResponse(it) }
+        }
+
+        return leaderboard.indexOf(selectedUser) + 1
+    }
 
     override suspend fun addJob(body: JobBody) {
         dbFactory.dbQuery {

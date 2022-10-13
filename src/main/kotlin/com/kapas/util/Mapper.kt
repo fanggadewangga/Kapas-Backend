@@ -77,7 +77,8 @@ object Mapper {
             uid = row[UserTable.uid],
             name = row[UserTable.name],
             score = row[UserTable.score],
-            avatarUrl = row[UserTable.avatarUrl]
+            avatarUrl = row[UserTable.avatarUrl],
+            rank = row[UserTable.rank]
         )
     }
 
