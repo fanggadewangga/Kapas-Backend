@@ -3,10 +3,6 @@ package com.kapas.model.job
 import com.google.gson.annotations.SerializedName
 
 data class JobBody(
-    /*
-    *  TODO : PAY ATTENTION TO TAMBAH LOKER PAGE
-    * */
-
     @field:SerializedName("title")
     val title: String,
 
@@ -26,7 +22,7 @@ data class JobBody(
     val description: String,
 
     @field:SerializedName("image_url")
-    val imageUrl: String,
+    val imageUrl: String?,
 
     @field:SerializedName("latitude")
     val latitude: Double,

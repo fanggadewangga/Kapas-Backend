@@ -6,6 +6,7 @@ import com.kapas.data.table.HistoryTable
 import com.kapas.data.table.JobTable
 import com.kapas.data.table.UserTable
 import com.kapas.model.history.HistoryBody
+import com.kapas.model.job.EditJobImageBody
 import com.kapas.model.job.JobBody
 import com.kapas.model.job.JobListResponse
 import com.kapas.model.job.JobResponse
@@ -14,10 +15,11 @@ import com.kapas.model.user.UserBody
 import com.kapas.model.user.UserResponse
 import com.kapas.util.Mapper
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.util.*
 
 class KapasRepository(
-    private val dbFactory: DatabaseFactory
+    private val dbFactory: DatabaseFactory,
 ) : IKapasRepository {
 
     override suspend fun addUser(body: UserBody) {
@@ -118,7 +120,7 @@ class KapasRepository(
                 table[wage] = body.wage
                 table[address] = body.address
                 table[description] = body.description
-                table[imageUrl] = body.imageUrl
+                table[imageUrl] = null
                 table[latitude] = body.latitude
                 table[longitude] = body.longitude
             }
@@ -159,6 +161,16 @@ class KapasRepository(
                 }
         }.first()
 
+    override suspend fun updateJobImage(jobId: String, body: EditJobImageBody) {
+        dbFactory.dbQuery {
+            JobTable.update(
+                where = { JobTable.jobId.eq(jobId) }
+            ) { table ->
+                table[imageUrl] = body.imageUrl
+            }
+        }
+    }
+
     override suspend fun getAllJobs(): List<JobListResponse> =
         dbFactory.dbQuery {
             JobTable.selectAll()
@@ -188,9 +200,9 @@ class KapasRepository(
 
     override suspend fun getHistoriesByUser(uid: String) =
         dbFactory.dbQuery {
-            HistoryTable.join(JobTable, JoinType.LEFT) {
+            HistoryTable.join(JobTable, JoinType.INNER) {
                 HistoryTable.jobId.eq(JobTable.jobId)
-            }.join(UserTable, JoinType.LEFT) {
+            }.join(UserTable, JoinType.INNER) {
                 HistoryTable.uid.eq(UserTable.uid)
             }.slice(
                 HistoryTable.transactionId,
@@ -201,8 +213,8 @@ class KapasRepository(
                 HistoryTable.uid.eq(uid)
             }
                 .mapNotNull {
-                Mapper.mapRowToHistoryResponse(it)
-            }
+                    Mapper.mapRowToHistoryResponse(it)
+                }
         }
 
 }

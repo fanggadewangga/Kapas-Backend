@@ -2,6 +2,7 @@ package com.kapas.data
 
 import com.kapas.model.history.HistoryBody
 import com.kapas.model.history.HistoryResponse
+import com.kapas.model.job.EditJobImageBody
 import com.kapas.model.job.JobBody
 import com.kapas.model.job.JobListResponse
 import com.kapas.model.job.JobResponse
@@ -20,6 +21,7 @@ interface IKapasRepository {
     suspend fun addJob(body: JobBody) // clear
     suspend fun deleteJob(jobId: String) // clear
     suspend fun getJobDetail(jobId: String): JobResponse // clear
+    suspend fun updateJobImage(jobId: String, body: EditJobImageBody) // not clear
     suspend fun getAllJobs(): List<JobListResponse> // clear
     suspend fun searchJob(query: String): List<JobListResponse> // clear
     suspend fun addHistory(body: HistoryBody) // clear

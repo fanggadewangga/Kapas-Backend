@@ -15,6 +15,9 @@ class JobRouteLocation {
         // GET
         const val DETAIL_JOB = "$JOB/{jobId}"
 
+        // PUT
+        const val UPDATE_IMAGE_JOB = "$JOB/{jobId}"
+
         // DELETE (not yet implemented)
         const val DELETE_JOB = "$JOB/{jobId}"
     }
@@ -24,6 +27,9 @@ class JobRouteLocation {
 
     @Location(POST_JOB)
     class JobPostRoute
+
+    @Location(UPDATE_IMAGE_JOB)
+    data class JobEditImageRoute(val jobId: String)
 
     @Location(DETAIL_JOB)
     data class JobGetDetailRoute(val jobId: String)
