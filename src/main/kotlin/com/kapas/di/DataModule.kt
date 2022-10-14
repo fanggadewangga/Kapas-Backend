@@ -3,7 +3,6 @@ package com.kapas.di
 import com.kapas.data.IKapasRepository
 import com.kapas.data.KapasRepository
 import com.kapas.data.database.DatabaseFactory
-import com.sun.jndi.toolkit.url.Uri
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.locations.*
