@@ -28,10 +28,10 @@ val databaseModule = module {
             val username = uri.userInfo.split(":").toTypedArray()[0]
             val password = uri.userInfo.split(":").toTypedArray()[1]
 
-            config.jdbcUrl =
+            jdbcUrl =
             "jdbc:postgresql://" + uri.host + ":" + uri.port + uri.path + "?sslmode=require" + "&user=$username&password=$password"
 
-            config.validate()
+            validate()
         }
         HikariDataSource(config)
     }
